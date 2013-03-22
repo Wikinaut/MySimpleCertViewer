@@ -20,7 +20,10 @@ function getCertificateInfo( $server, $port = 443, $timeout = false ) {
 	$context = stream_context_create(
 		array(
 			'ssl' => array(
+				'verify_peer' => false,
+				'allow_self_signed' => true,
 				'capture_peer_cert' => true,
+				'CN_match' => true
 			)
 		)
 	);
