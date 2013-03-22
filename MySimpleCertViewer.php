@@ -17,9 +17,8 @@
 define( 'CERTVIEWER_VERSION', "1.20 20130317" );
 
 function getCertificateInfo( $server, $port = 443, $timeout = false ) {
-
-	$context = stream_context_create( 
-		array( 
+	$context = stream_context_create(
+		array(
 			'ssl' => array(
 				'capture_peer_cert' => true,
 			)
@@ -48,8 +47,7 @@ function getCertificateInfo( $server, $port = 443, $timeout = false ) {
 	$certArray = openssl_x509_parse( $cp );
 	openssl_x509_free( $cp );
 
-	$now = time();
-	date_default_timezone_set( 'UTC' );
+	$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
 
 	$certArray1 = array();
 
@@ -57,8 +55,8 @@ function getCertificateInfo( $server, $port = 443, $timeout = false ) {
 	$certArray1['x-server'] = $server;
 	$certArray1['x-port'] = $port;
 	$certArray1['x-retrieval-time'] = array(
-		'utc' => date( "YmdHis", $now ) . "Z",
-		'unix' => date( "U", $now),
+		'utc' => $now->format( 'YmdHis\Z' ),
+		'unix' => $now->getTimestamp(),
 	);
 	$certArray1['x-mysimplecertviewer-version'] = CERTVIEWER_VERSION;
 
